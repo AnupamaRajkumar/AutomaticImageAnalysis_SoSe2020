@@ -21,6 +21,9 @@ void yours::binarizeImage(const cv::Mat& src, cv::Mat& dst, int thresh) {
     // https://docs.opencv.org/4.2.0/d7/d1b/group__imgproc__misc.html#gae8a4a146d1ca78c626a53577199e9c57
 	std::cout << " Converting to binary" << std::endl;
 	cv::threshold(dstGray, dst, thresh, maxVal, cv::THRESH_BINARY);
+	const char* win_4 = "Binarized Image wo smoothing";
+	cv::namedWindow(win_4);
+	given::showImage(dst, win_4, 0);
 }
 
 
@@ -29,11 +32,13 @@ void yours::binarizeImage(const cv::Mat& src, cv::Mat& dst, int thresh) {
 //   (tests only work if you don't change the default value for size)
 cv::Mat yours::processImage(const cv::Mat& image) {
 	int size = 3;
-	int thresh = 127;
+	int thresh = 125;
 	cv::Mat dst, smoothDst;
 	dst = image.clone();
 	smoothDst = dst.clone();
-	binarizeImage(image, dst, thresh);
-	given::smoothImage(dst, smoothDst, size);
-	return smoothDst.clone();
+	//binarizeImage(image, dst, thresh);
+	//given::smoothImage(dst, smoothDst, size);
+	given::smoothImage(image, smoothDst, size);
+	binarizeImage(smoothDst, dst, thresh);
+	return dst.clone();
 }
