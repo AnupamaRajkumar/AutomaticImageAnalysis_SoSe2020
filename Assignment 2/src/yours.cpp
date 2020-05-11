@@ -54,7 +54,7 @@ cv::Mat yours::normalizeFourierDescriptor(const cv::Mat& fd, int n) {
 		else
 		{
 			/*add a very small constant to F(1) if it is 0*/
-			fDescript.at<float>(1) += pow(10, -3);
+                        fDescript.at<float>(1)  = 1.0 ;   //+= pow(10, -5);
 		}
 	}
     // There are some useful OpenCV functions such as cartToPolar
@@ -103,10 +103,13 @@ int yours::classifyFourierDescriptor(const cv::Mat& fd, const std::vector<cv::Ma
 		double dist = norm(fd, c, NORM_L2);
 		cnt = 0;
 		cout << dist << endl;
-		if (dist > thresh) {
+                if (dist < thresh) {
 			index = cnt;
 			return index;
 		}
+                else{
+                    return -1;
+                }
 		cnt++;
 	}	
 }
